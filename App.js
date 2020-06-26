@@ -10,11 +10,15 @@ import {
   StatusBar,
 } from 'react-native';
 
+import {Provider as StoreProvider} from 'react-redux'
+import store from './store'
 import Navigator from './src/Navigator'
 
 const App = () =>  {
   return (
-    <Navigator></Navigator>
+    <StoreProvider store={store} >
+      <Navigator/>
+    </StoreProvider>
   );
 };
 

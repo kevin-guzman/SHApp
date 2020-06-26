@@ -5,22 +5,24 @@ import {View,
   StyleSheet, 
   TouchableOpacity,
   FlatList,
-  Slider,
   Button,
   Alert,
   TouchableHighlight,
   Image,
   ScrollView,
-  AsyncStorage
+  Slider
 } from 'react-native'
 import { Icon } from 'react-native-elements'
+import AsyncStorage from '@react-native-community/async-storage';
+//import {SliderBase} from '@react-native-community/slider'
 
 //import style from './Styles'
-import DATA from '../util/data.json'
+//import DATA from '../util/data.json'
 import style from '../util/Styles'
 //import im from '../media/Batman1.jpg'
 //import { ListItem } from 'react-native-elements';
 
+import {connect} from 'react-redux'
 
 
 var i=0;
@@ -29,6 +31,7 @@ var j=0;
 class Rooms extends Component{
     constructor(props) {
         super(props);
+        setInterval(()=>{this.readStorage()},100)
         this.state = {
         value: 50,
         vectid:0,
@@ -36,21 +39,56 @@ class Rooms extends Component{
         ButtonState:'Off',
         ButtonValue: 0,
         Val:'',
+        Rooms:[
+          {
+            id: 0,
+            room: ""
+          }
+        ]
         };
     }
 
+    async componentDidMount(){
+      console.log(this.state.Rooms);
+      try {
+        await AsyncStorage.setItem('Rooms', JSON.stringify(this.state.Rooms));
+        const myArray = await AsyncStorage.getItem('Rooms');
+        if (myArray !== null) {
+            //console.log(JSON.parse(myArray));
+            this.setState({Rooms: JSON.parse(myArray)})
+        }
+      } catch (error) {
+          Alert.alert(error)
+      }
+    }
+
+    readStorage = async() =>{
+      try {
+        //await AsyncStorage.setItem('Rooms', JSON.stringify(this.state.Rooms));
+        const myArray = await AsyncStorage.getItem('Rooms');
+        if (myArray !== null) {
+            //console.log(JSON.parse(myArray));
+            this.setState({Rooms: JSON.parse(myArray)})
+        }
+      } catch (error) {
+          Alert.alert(error)
+      }
+    }
+
     List = () => {
-        ButtonOnOff=[];
         return(
-        DATA.map((x,i) => {
+        this.props.rooms.map((x,i) => {
             if(i){
             let b='off';
             return(
                 <View style={style.item} key={i} >
                 <View style={{flexDirection:'column',justifyContent:'space-between'}}>
-                    <Text style={{fontSize:12,alignSelf:'center'}}>{x.title}</Text> 
-                    <TouchableHighlight  onLongPress={()=>this.editar()}  onPress={()=>this.OnOff(x.title)} >
+                    <Text style={{fontSize:12,alignSelf:'center'}}>{x.room}</Text> 
+                    <TouchableHighlight  onLongPress={()=>this.editar()}  onPress={()=>this.OnOff(x.room)} >
                     {/* <Image style={Styles.image} source={im}  /> */}
+                      <Text>
+                        rer
+                      </Text>
                     </TouchableHighlight>
                 </View>
                 <Slider style={{alignItems:'center', flex:1, paddingVertical:'2%'}}
@@ -60,16 +98,17 @@ class Rooms extends Component{
                                     {
                                     this.setState({value: value}), 
                                     this.setState({
-                                                    SliderInfo: x.title.toString() + ":" + value,
+                                                    SliderInfo: x.room.toString() + ":" + value,
                                                     val:value
                                                     })
                                     }
                                 } // Se añade el cuarto y el valor del slider a la variavle SliderInfo                             value => {this.Sliderval(value,parseInt(params.id))}
                     value={50}
+                    on
                 />
                 </View>
             )
-        }
+          }
         })
         )
     }
@@ -156,42 +195,7 @@ class Rooms extends Component{
     }
 }
 
-
-
-/* 
-<FlatList
-                  data={DATA}
-                  //renderItem={({ item }) => <Item title={item.title} />}
-                  renderItem={({ item }) => this.HabitationList(item.title)
-
-                         <View style={style.item}>
-                          
-                            <View style={{flexDirection:'column',justifyContent:'space-between'}}>
-                              <Text style={style.title}>{item.title}</Text> 
-                              <TouchableHighlight  onLongPress={()=>this.editar()}  onPress={()=>this.OnOff()} >
-                                <Image style={Styles.image} source={im}  />
-                              </TouchableHighlight>
-                            </View>
-                             
-                            <Slider style={{alignItems:'center', flex:1, paddingVertical:'5%'}}
-                              step={1}
-                              maximumValue={100}
-                              onValueChange={ value => {this.setState({value: value}), 
-                                              this.setState({SliderInfo: item.title.toString() + ":" + value})} } // Se añade el cuarto y el valor del slider a la variavle SliderInfo                             value => {this.Sliderval(value,parseInt(params.id))}
-                              value={65}
-                            />
-
-                        </View> 
-
-                      }
-                      keyExtractor={item => item.id}
-                    />
- */
-
-
-
 const Styles = StyleSheet.create({
-
   containerr: {
     flex: 4.7,
     marginHorizontal:'4%',
@@ -199,27 +203,23 @@ const Styles = StyleSheet.create({
     //marginBottom:'0%'
     //marginTop: Constants.statusBarHeight,
   },
-
   image:{
     width:40,
     height:40,
     borderRadius:3,
   },
-
   habitationInfo:{
     backgroundColor: 'rgba(5,5,15,0.2)',
     borderColor:'black',
     borderWidth:0.5,
     margin:'3%'
   },
-
   addButton:{
     paddingHorizontal:'0%',
     paddingStart:'0%', 
     alignSelf:'flex-end',
     margin:'2%',
   },
-
   addTouchale:{
     borderWidth:0.9,
     borderColor:'black', //rgba(0,0,0,0.2)
@@ -231,12 +231,10 @@ const Styles = StyleSheet.create({
     borderRadius:50,
     backgroundColor: 'rgba(5,5,15,0.2)',
   },
-
   container :{
     flex : 1,
     backgroundColor : 'white',
   },
-
   header: {
     flex: 1.5,
     alignItems : 'center',
@@ -249,8 +247,6 @@ const Styles = StyleSheet.create({
     marginTop:'5%'
     //paddingTop:'6%'
   },
-
-
   paragraph :{
     fontSize : 20,
     color : 'rgba(90,40,130,1)',
@@ -258,9 +254,7 @@ const Styles = StyleSheet.create({
     textDecorationColor:'rgba(2,20,202,1)',
     textDecorationStyle:'solid',
     margin:'2%'
-   },
-
-
+  },
   footer:{
     flexDirection:'row',
     justifyContent:'space-between',
@@ -271,4 +265,8 @@ const Styles = StyleSheet.create({
   },
   
 })
-export default Rooms
+
+export default connect(
+  (state)=>({user:state.user, rooms:state.rooms }),
+)
+(Rooms)

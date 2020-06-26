@@ -8,11 +8,12 @@ import {View,
   TouchableOpacity
 } from 'react-native'
 
-import data from '../util/data.json'
+import {connect} from 'react-redux'
+import {addRoom,removeRoom} from '../actions/rooms'
 import styles from '../util/Styles'
+import AsyncStorage from '@react-native-community/async-storage'
 
-var id=0
-
+var id =0
 class Add extends Component{
   constructor(props){
     super(props)
@@ -24,16 +25,28 @@ class Add extends Component{
   }
   _onPressButton() {Alert.alert('Sirve el boton')}
 
-  agregar=()=>{
-    id = id+1
-    data.push({
-      "title" : this.state.nombre,
-      "id": this.state.id
+  agregar = async() =>{
+    /* var CurrentStorage = await AsyncStorage.getItem('Rooms')
+    CurrentStorage= JSON.parse(CurrentStorage)
+    var CurrentId = CurrentStorage.length - 1; 
+    var obj={
+      id: CurrentId + 1,
+      room: this.state.nombre
+    }
+    CurrentStorage.push(obj)
+    //console.log(CurrentStorage)
+    try {
+      await AsyncStorage.setItem('Rooms', JSON.stringify(CurrentStorage));
+      this.props.navigation.navigate('Rooms')
+    } catch (error) {
+      Alert.alert(error)
+    } */
+    id+=1;
+    this.props.addRoom({
+      id: id,
+      room: this.state.nombre
     })
-    //this.props.navigation.navigate('Rooms'/* , {id: id } */), //this.state.id
-    this.setState({
-      nombre: ''
-    })
+    this.props.navigation.navigate('Rooms')
   }
 
   render(){
@@ -128,52 +141,38 @@ class Add extends Component{
   }
 }
 const Styles = StyleSheet.create({
-
   container :{
     flex : 1,
     backgroundColor : 'white',//'#E4F2F8',
     padding: 10
   },
-
-
   header: {
     flex: 2,
     flexDirection:'row',
     marginVertical:'15%',
   },
-
-
   headerLeft: {
     flex: 1.2,
     marginVertical:'7%',
   },
-
-
   headerRigth: {
     flex: 1
   },
-
-
   paragraph :{
     fontSize : 20,
     color : 'black',
     textAlign : 'center',
- },
-
-
-  name:{
-     borderWidth: 1,
-     borderColor: 'gray',
-     padding: 2
   },
-
-
+  name:{
+    borderWidth: 1,
+    borderColor: 'gray',
+    padding: 2
+  },
   footer:{
     flex: 0.5,
     alignContent:'flex-end',
     flexDirection : 'row',
   },
-
   footerLeft:{
     flex:1,
     marginHorizontal:5,
@@ -186,4 +185,11 @@ const Styles = StyleSheet.create({
   }
 
 })
-export default Add
+export default connect(
+  (state)=>({user:state.user, rooms:state.rooms }),
+  {
+    addRoom,
+    removeRoom
+  }
+)
+(Add)
