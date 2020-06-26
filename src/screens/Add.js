@@ -11,7 +11,8 @@ import {View,
 import {connect} from 'react-redux'
 import {addRoom,removeRoom} from '../actions/rooms'
 import styles from '../util/Styles'
-import AsyncStorage from '@react-native-community/async-storage'
+
+//import AsyncStorage from '@react-native-community/async-storage'
 
 var id =0
 class Add extends Component{

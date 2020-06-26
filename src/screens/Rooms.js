@@ -14,15 +14,13 @@ import {View,
 } from 'react-native'
 import { Icon } from 'react-native-elements'
 import AsyncStorage from '@react-native-community/async-storage';
-//import {SliderBase} from '@react-native-community/slider'
-
-//import style from './Styles'
-//import DATA from '../util/data.json'
+import {Card} from 'react-native-paper'
 import style from '../util/Styles'
 //import im from '../media/Batman1.jpg'
-//import { ListItem } from 'react-native-elements';
+
 
 import {connect} from 'react-redux'
+import RoomCard from '../components/RoomCard';
 
 
 var i=0;
@@ -75,37 +73,26 @@ class Rooms extends Component{
       }
     }
 
+    changeRoomValue = (room, value) =>{
+      console.log(room,value)
+      this.setState({
+        SliderInfo: room.toString() + ":" + value,
+        val:value
+        })
+    }
+
     List = () => {
         return(
         this.props.rooms.map((x,i) => {
             if(i){
             let b='off';
             return(
-                <View style={style.item} key={i} >
-                <View style={{flexDirection:'column',justifyContent:'space-between'}}>
-                    <Text style={{fontSize:12,alignSelf:'center'}}>{x.room}</Text> 
-                    <TouchableHighlight  onLongPress={()=>this.editar()}  onPress={()=>this.OnOff(x.room)} >
-                    {/* <Image style={Styles.image} source={im}  /> */}
-                      <Text>
-                        rer
-                      </Text>
-                    </TouchableHighlight>
-                </View>
-                <Slider style={{alignItems:'center', flex:1, paddingVertical:'2%'}}
-                    step={1}
-                    maximumValue={100}
-                    onValueChange={ value => 
-                                    {
-                                    this.setState({value: value}), 
-                                    this.setState({
-                                                    SliderInfo: x.room.toString() + ":" + value,
-                                                    val:value
-                                                    })
-                                    }
-                                } // Se añade el cuarto y el valor del slider a la variavle SliderInfo                             value => {this.Sliderval(value,parseInt(params.id))}
-                    value={50}
-                    on
-                />
+                <View /* style={style.item} */ key={i} >
+                  <RoomCard
+                    title={x.room}
+                    changeRoomValue={this.changeRoomValue}
+                  >
+                  </RoomCard>
                 </View>
             )
           }
@@ -157,6 +144,10 @@ class Rooms extends Component{
 
                 <View style={Styles.containerr}>
                     <ScrollView>
+                      {/* <RoomList
+                        Rooms={this.props.rooms}
+                      >
+                      </RoomList> */}
                     {this.List()}
                     </ScrollView>               
                 </View>
