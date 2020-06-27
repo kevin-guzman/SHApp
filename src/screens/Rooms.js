@@ -21,22 +21,13 @@ import style from '../util/Styles'
 
 import {connect} from 'react-redux'
 import RoomCard from '../components/RoomCard';
-
-
-var i=0;
-var j=0;
+import UtilHeader from '../components/UtilHeader';
 
 class Rooms extends Component{
     constructor(props) {
         super(props);
-        setInterval(()=>{this.readStorage()},100)
         this.state = {
-        value: 50,
-        vectid:0,
         SliderInfo:'',
-        ButtonState:'Off',
-        ButtonValue: 0,
-        Val:'',
         Rooms:[
           {
             id: 0,
@@ -44,33 +35,6 @@ class Rooms extends Component{
           }
         ]
         };
-    }
-
-    async componentDidMount(){
-      console.log(this.state.Rooms);
-      try {
-        await AsyncStorage.setItem('Rooms', JSON.stringify(this.state.Rooms));
-        const myArray = await AsyncStorage.getItem('Rooms');
-        if (myArray !== null) {
-            //console.log(JSON.parse(myArray));
-            this.setState({Rooms: JSON.parse(myArray)})
-        }
-      } catch (error) {
-          Alert.alert(error)
-      }
-    }
-
-    readStorage = async() =>{
-      try {
-        //await AsyncStorage.setItem('Rooms', JSON.stringify(this.state.Rooms));
-        const myArray = await AsyncStorage.getItem('Rooms');
-        if (myArray !== null) {
-            //console.log(JSON.parse(myArray));
-            this.setState({Rooms: JSON.parse(myArray)})
-        }
-      } catch (error) {
-          Alert.alert(error)
-      }
     }
 
     changeRoomValue = (room, value) =>{
@@ -82,12 +46,10 @@ class Rooms extends Component{
     }
 
     List = () => {
-        return(
+      return(
         this.props.rooms.map((x,i) => {
-            if(i){
-            let b='off';
             return(
-                <View /* style={style.item} */ key={i} >
+                <View key={i} >
                   <RoomCard
                     title={x.room}
                     changeRoomValue={this.changeRoomValue}
@@ -95,94 +57,38 @@ class Rooms extends Component{
                   </RoomCard>
                 </View>
             )
-          }
         })
-        )
+      )
     }
 
     agregar = () =>{
-        this.props.navigation.navigate('Agregar')
-        //Alert.alert('Agregar')
+        this.props.navigation.navigate('Add')
     }
-
-    cancelar = () =>{
-        this.props.navigation.navigate('Welcome')
-    }
-
-    editar = () =>{
-        Alert.alert('Editar')
-    }
-
-    OnOff (room) {
-        
-        if(i){
-        this.setState({ButtonState: 'Off',SliderInfo: room.toString() + ':0'})
-        //this.setState({SliderInfo: room.toString() + '0'})
-        i=!i
-        
-        }else{
-        this.setState({ButtonState: 'On', SliderInfo: room.toString() + ':100'})
-        //this.setState({SliderInfo: room.toString() + '100'})
-        i=!i
-        }
-
-        //Alert.alert('OnOFF')
-    }
-
 
     render(){
-        const {navigation}= this.props;
-        const {value} = this.state;
-        const { params } = this.props.navigation.state
-        const {SliderInfo} = this.state;
-
-
-        
-            return(
-            
-            <View style={Styles.container}>
-
-                <View style={Styles.containerr}>
-                    <ScrollView>
-                      {/* <RoomList
-                        Rooms={this.props.rooms}
-                      >
-                      </RoomList> */}
-                    {this.List()}
-                    </ScrollView>               
-                </View>
-
-                <Text>
-                    {SliderInfo}
-                </Text>
-
-
-                <View  style={Styles.footer} >
-                    <View style={Styles.habitationInfo} >
-                    <Text style= {Styles.paragraph}   > 
-                        Habitaciones: {navigation.getParam('id',0)} 
-                    </Text>
-                    </View>
-                    
-                    <View style={Styles.addButton}>
-                    <TouchableOpacity  
-                        style={Styles.addTouchale}
-                        onPress={()=>this.agregar()}
-                    >
-                        <Icon name={"add"}  size={30} color="#01a699" />
-                    </TouchableOpacity>
-                    </View>
-                </View> 
-
-                <View style={{width:'100%',height:'1%'}} >
-                </View>
-
+      const {navigation}= this.props;
+      const {value} = this.state;
+      const { params } = this.props.navigation.state
+      const {SliderInfo} = this.state;
+      const {RoomCounter} = this.state
+        return(
+        <View style={Styles.container}>
+          <UtilHeader
+            title={`Habitaciones: ${this.props.rooms.length}`}
+            iconName='plus-circle'
+            iconColor='black'
+            iconPress={this.agregar}
+          />
+            <View style={Styles.containerr}>
+                <ScrollView>
+                {this.List()}
+                </ScrollView>               
             </View>
-
-
-
+            <Text>
+                {SliderInfo}
+            </Text>
+        </View>
         )
-
     }
 }
 
@@ -190,7 +96,7 @@ const Styles = StyleSheet.create({
   containerr: {
     flex: 4.7,
     marginHorizontal:'4%',
-    marginTop:50
+    marginTop:10
     //marginBottom:'0%'
     //marginTop: Constants.statusBarHeight,
   },

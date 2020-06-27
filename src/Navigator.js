@@ -24,16 +24,11 @@ const HomeStack = createBottomTabNavigator(
                 tabBarIcon: ({ focused, tintColor }) => {
                     const { routeName } = navigation.state;
                     let iconName;
-                    /* if (routeName === 'Login') {
-                    iconName =  focused ? 'home' : 'home';
-                    } else */ 
                     if (routeName === 'Add') {
                     iconName = focused ? 'library-add' : 'library-add';
                     } else if (routeName === 'Rooms'){
                     iconName = focused ? 'list' : 'list'; //list
-                    } /* else if (routeName === 'Ajustes'){
-                    iconName = focused ? 'settings' : 'settings';
-                    } */
+                    }
             
                     // You can return any component that you like here! We usually use an
                     // icon component from react-native-vector-icons
@@ -43,7 +38,7 @@ const HomeStack = createBottomTabNavigator(
             tabBarOptions: {
                 activeTintColor: 'purple',
                 inactiveTintColor: 'gray',
-                headerMode:'none'
+                //headerMode:'none'
             },
             
         }
@@ -55,7 +50,7 @@ const LoginStack = createStackNavigator(
         SingUp:  SingUp,
     },
     {
-        headerMode:'none',
+        //headerMode:'none',
         initialRouteName: 'Login'
     },
     

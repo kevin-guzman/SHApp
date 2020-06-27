@@ -18,7 +18,6 @@ let RoomCard = (props) =>{
                     subtitle='Familiar'
                 />
             </View>
-            
             <Card.Content style={{flexDirection: 'row', justifyContent: 'space-between'}} >
                 <Image
                     source={im}
