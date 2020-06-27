@@ -3,23 +3,15 @@ import { IconButton } from 'react-native-paper'
 import im from '../util/img/Fondo12.jpg'
 import { View, PointPropType, StyleSheet, Text } from 'react-native'
 
-let UtilHeader = (props) =>{
+let Windows = (props) =>{
     return(
         <View style={Styles.card} >
                 <View style={{marginHorizontal:'4%', marginVertical: '1%', alignSelf:'center'}} >
                     <Text style={Styles.text} >
-                        {props.title}
+                        Hola
                     </Text>
                 </View>
-                <View style={Styles.icon} >
-                    <IconButton
-                        //style={Styles.icon}
-                        icon={props.iconName}
-                        color={props.iconColor}
-                        onPress={ () => props.iconPress() }
-                        size={35}
-                    />
-                </View>
+
         </View>
     )
 }
@@ -53,4 +45,4 @@ const Styles = StyleSheet.create({
 
 })
 
-export default UtilHeader
+export default Windows

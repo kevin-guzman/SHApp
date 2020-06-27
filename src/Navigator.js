@@ -4,35 +4,49 @@ import {createAppContainer, createSwitchNavigator} from 'react-navigation'
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { Icon } from 'react-native-elements'
 import {createStackNavigator} from 'react-navigation-stack'
+import { Button, View, IconButton } from 'react-native-paper'
+//import { mdiWindowOpenVariant } from '@mdi/font';
 
 //Screens
 import Add from './screens/Add'
 import Login from './screens/Login'
 import Rooms from './screens/Rooms'
-//import Ajustes from './Components/Ajustes'
+import Windows from './screens/Windows'
 import SingUp from './screens/SingUp'
+//import { View } from 'react-native';
 
 
+
+const HabitacionesStack = createStackNavigator(
+  {
+    Rooms: Rooms,
+    Add : Add
+  },
+  {
+    initialRouteName: 'Rooms',
+    headerMode:'none',
+  }
+);
 
 const HomeStack = createBottomTabNavigator(
         {
-            Rooms: Rooms,
-            Add:  Add,
+            Rooms: HabitacionesStack,
+            Windows: Windows
         },
         {
             defaultNavigationOptions: ({ navigation }) => ({
                 tabBarIcon: ({ focused, tintColor }) => {
                     const { routeName } = navigation.state;
                     let iconName;
-                    if (routeName === 'Add') {
-                    iconName = focused ? 'library-add' : 'library-add';
+                    if (routeName === 'Windows' ) {
+                    iconName = focused ? 'format-list-bulleted' : 'window-open-variant';//monitor
                     } else if (routeName === 'Rooms'){
-                    iconName = focused ? 'list' : 'list'; //list
+                    iconName = focused ? 'format-list-bulleted' : 'lightbulb-on'; //list
                     }
             
                     // You can return any component that you like here! We usually use an
                     // icon component from react-native-vector-icons
-                    return <Icon name={iconName} size={25} color={tintColor} />;//iconName  tintColor
+                    return <IconButton icon={iconName} color={tintColor} /> ; {/* <Icon name={iconName} size={25} color={tintColor} /> */};//iconName  tintColor
                 }
             }),
             tabBarOptions: {
@@ -43,14 +57,14 @@ const HomeStack = createBottomTabNavigator(
             
         }
 );
-
+//
 const LoginStack = createStackNavigator(
     {
         Login: Login,
         SingUp:  SingUp,
     },
     {
-        //headerMode:'none',
+        headerMode:'none',
         initialRouteName: 'Login'
     },
     
@@ -68,49 +82,4 @@ export default createAppContainer(
     )
 )
 
-/* export default createAppContainer(createBottomTabNavigator(
-
-  {
-    Inicio:Inicio,
-    Habitaciones:AddStack,
-    Ajustes:Ajustes
-  },
-
-  {
-    defaultNavigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ focused, tintColor }) => {
-        const { routeName } = navigation.state;
-        let iconName;
-        if (routeName === 'Inicio') {
-          iconName =  focused ? 'home' : 'home';
-        } else if (routeName === 'Agregar') {
-          iconName = focused ? 'library-add' : 'library-add';
-        } else if (routeName === 'Habitaciones'){
-          iconName = focused ? 'list' : 'list';
-        } else if (routeName === 'Ajustes'){
-          iconName = focused ? 'settings' : 'settings';
-        }
-
-        // You can return any component that you like here! We usually use an
-        // icon component from react-native-vector-icons
-        return <Icon name={iconName} size={25} color={tintColor} />;
-      }
-
-    }),
-    tabBarOptions: {
-      activeTintColor: 'purple',
-      inactiveTintColor: 'gray',
-      headerMode:'none'
-    },
-    
-  },
-
-  {
-    headerMode: 'none',
-    navigationOptions: {
-        headerVisible: false,
-    },
-  }
-
-)); */
 
