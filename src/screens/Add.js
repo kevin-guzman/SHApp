@@ -74,12 +74,28 @@ class Add extends Component{
                 onChangeText={(grupo)=>{this.setState({grupo})}}
               />
               <View style={Styles.image} >
-                <Image
-                  style={{flex:1}}
-                  width={200}
-                  height={200}
-                  source={{uri: this.props.navigation.getParam('photo')}}
-                />
+                {
+                  this.props.navigation.getParam('photo') !== undefined?
+                  <Image
+                    style={{flex:1}}
+                    width={200}
+                    height={200}
+                    source={
+                      {uri: this.props.navigation.getParam('photo')}
+                    }
+                  />
+                  :
+                  <View style={{alignContent:'center', marginVertical: '20%', marginHorizontal: '4%'}} >
+                    <Text>
+                      {'Añade una imagen para tu habitacion' + 
+                        '\n' + 
+                        'presionando en capturar'
+                      }
+                    </Text>
+                  </View>
+                  
+                }
+                
               </View>
               
             </View>
@@ -136,8 +152,7 @@ const Styles = StyleSheet.create({
   header: {
     flex: 3,
     flexDirection:'row',
-    marginVertical:'15%',
-    //backgroundColor:'red'
+    marginVertical:'5%',
   },
   headerLeft: {
     flex: 1.2,
@@ -161,7 +176,6 @@ const Styles = StyleSheet.create({
     flex: 0.5,
     alignContent:'flex-end',
     flexDirection : 'row',
-    //backgroundColor:'blue'
   },
   footerLeft:{
     flex:1,

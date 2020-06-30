@@ -11,22 +11,7 @@ import { RNCamera } from 'react-native-camera';
 } */
 
 class TakePhoto extends Component{
-    constructor(props){
-        super(props)
-        this.state={
-            imageUri:null,
-            taked: 0
-        }
-    }
     render(){
-        const { imageUri } = this.state;
-        const { taked } = this.state;
-        /* if (taked) {
-            console.log('inside')
-            console.log(imageUri)
-            //return <ImageBackground width={20} source={{uri: imageUri}}/>;
-            return <Image  style={{flex:1, alignItems: 'center'}} source= {{uri: imageUri}}  />;
-        } */
         return(
             <View style={styles.container}>
                 <RNCamera
@@ -42,20 +27,14 @@ class TakePhoto extends Component{
                     buttonPositive: 'Listo',
                     buttonNegative: 'Cancelar',
                 }}
-                /* androidRecordAudioPermissionOptions={{
-                    title: 'Permission to use audio recording',
-                    message: 'We need your permission to use your audio',
-                    buttonPositive: 'Ok',
-                    buttonNegative: 'Cancel',
-                }} */
                 onGoogleVisionBarcodesDetected={({ barcodes }) => {
                     console.log(barcodes);
                 }}
                 />
                 <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
-                <TouchableOpacity onPress={this.takePicture.bind(this)} style={styles.capture}>
-                    <Text style={{ fontSize: 14 }}> Tomar </Text>
-                </TouchableOpacity>
+                    <TouchableOpacity onPress={this.takePicture.bind(this)} style={styles.capture}>
+                        <Text style={{ fontSize: 14 }}> Tomar </Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         )
@@ -64,10 +43,7 @@ class TakePhoto extends Component{
         if (this.camera) {
             const options = { quality: 0.5, base64: true };
             const data = await this.camera.takePictureAsync(options);
-            this.setState({ imageUri: data.uri, taked:1 })
             this.props.navigation.navigate('Add', {photo: data.uri} )
-            //console.log(data.uri);
-            //console.log(data)
         }
     }
 }
