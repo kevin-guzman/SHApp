@@ -52,7 +52,9 @@ class Rooms extends Component{
                 <View key={i} >
                   <RoomCard
                     title={x.room}
+                    subtitle={x.groupRoom}
                     changeRoomValue={this.changeRoomValue}
+                    bgColor='green'
                   >
                   </RoomCard>
                 </View>
@@ -62,7 +64,8 @@ class Rooms extends Component{
     }
 
     agregar = () =>{
-        this.props.navigation.navigate('Add')
+      const {navigation}= this.props;
+      navigation.navigate('Add')
     }
 
     render(){

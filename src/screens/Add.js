@@ -20,7 +20,8 @@ class Add extends Component{
     super(props)
 
     this.state={
-      nombre:''
+      nombre:'',
+      grupo:'',
     }
 
   }
@@ -45,7 +46,8 @@ class Add extends Component{
     id+=1;
     this.props.addRoom({
       id: id,
-      room: this.state.nombre
+      room: this.state.nombre,
+      groupRoom: this.state.grupo
     })
     this.props.navigation.navigate('Rooms')
   }
@@ -63,16 +65,18 @@ class Add extends Component{
               </Text>
               <TextInput 
                 style={Styles.name} 
-                placeholder="NOMBRE" 
+                placeholder="Nombre" 
                 value={this.state.nombre} 
                 onChangeText={(nombre)=>{this.setState({nombre})}}
               />   
               <Text style= {Styles.paragraph}>
-                  Numero: 
+                  Grupo de habitaciones: 
               </Text>
               <TextInput 
                 style={Styles.name} 
-                placeholder="NUMERO"
+                placeholder="Nombre del grupo"
+                value={this.state.grupo} 
+                onChangeText={(grupo)=>{this.setState({grupo})}}
               />
             </View>
 

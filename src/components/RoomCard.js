@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {
     View,
     Text,
@@ -10,51 +10,76 @@ import { Card } from 'react-native-paper'
 import im from '../util/img/Fondo12.jpg'
 
 let RoomCard = (props) =>{
+    let [sliderValue, setSliderValue] = useState(50)
+    let [bgColor, setBgColor] = useState(props.bgColor)
     return(
         <Card style={Styles.card} >
-            <View style={{marginLeft:'40%'}} >
-                <Card.Title 
-                    title={props.title}
-                    subtitle='Familiar'
-                />
-            </View>
             <Card.Content style={{flexDirection: 'row', justifyContent: 'space-between'}} >
                 <Image
                     source={im}
                     style={Styles.image}
-                >
-                </Image>
-                <Slider
-                    style={{alignItems:'center', flex:1, paddingVertical:'2%'}}
-                    step={1}
-                    maximumValue={100}
-                    onValueChange={(value) => {props.changeRoomValue(props.title, value)}}
-                    /* onValueChange={ value => 
-                                    {
-                                    this.setState({value: value}), 
-                                    this.setState({
-                                                    SliderInfo: x.room.toString() + ":" + value,
-                                                    val:value
-                                                    })
-                                    }
-                                } */ // Se añade el cuarto y el valor del slider a la variavle SliderInfo                             value => {this.Sliderval(value,parseInt(params.id))}
-                    value={50}
                 />
+
+                <View style={Styles.cardView} >
+                    <View>
+                        <Text style={Styles.title} >
+                            {props.title}
+                        </Text>
+                        <Text style={Styles.subtitle} >
+                            {props.subtitle}
+                        </Text>
+                    </View>
+                    <View style={{flexDirection:'row',}} >
+                        <Slider
+                            style={{alignItems:'center', flex:1, paddingVertical:'2%'}}
+                            step={1}
+                            maximumValue={100}
+                            onValueChange={(value) => 
+                                {
+                                    props.changeRoomValue(props.title, value)
+                                    setSliderValue(value)
+                                }
+                            }
+                            value={50}
+                        />
+                        <Text>
+                            {`${sliderValue}%`}
+                        </Text>
+                    </View>
+                </View>
+                
+                
             </Card.Content>
         </Card>
     )
 }
 
+const ImageSize = 70;
+
 const Styles = StyleSheet.create({
     image:{
-        width:50,
-        height:50,
+        width:ImageSize,
+        height:ImageSize,
         borderRadius:3,
+        alignSelf:'flex-end'
     },
     card:{
         marginHorizontal:'1%',
         marginVertical:'1.5%',
-        backgroundColor:'#f5f5f5',
+        backgroundColor: '#f5f5f5', // {bgColor !== null ? bgColor : '#f5f5f5'}
+    },
+    title:{
+        fontSize:20,
+        textAlign:'center',
+    },
+    subtitle:{
+        fontSize:10,
+        textAlign:'center'
+    },
+    cardView:{
+        flex:1, 
+        flexDirection: 'column', 
+        alignSelf:'center'
     }
 
 })
