@@ -28,21 +28,6 @@ class Add extends Component{
   _onPressButton() {Alert.alert('Sirve el boton')}
 
   agregar = async() =>{
-    /* var CurrentStorage = await AsyncStorage.getItem('Rooms')
-    CurrentStorage= JSON.parse(CurrentStorage)
-    var CurrentId = CurrentStorage.length - 1; 
-    var obj={
-      id: CurrentId + 1,
-      room: this.state.nombre
-    }
-    CurrentStorage.push(obj)
-    //console.log(CurrentStorage)
-    try {
-      await AsyncStorage.setItem('Rooms', JSON.stringify(CurrentStorage));
-      this.props.navigation.navigate('Rooms')
-    } catch (error) {
-      Alert.alert(error)
-    } */
     id+=1;
     this.props.addRoom({
       id: id,
@@ -52,11 +37,13 @@ class Add extends Component{
     this.props.navigation.navigate('Rooms')
   }
 
+  cancelar = () => {
+    this.props.navigation.navigate('Rooms')
+  }
+
   render(){
     return(
       <View style={Styles.container}>
-
-        
         <View style = {Styles.header}>
 
             <View style={Styles.headerLeft}>
@@ -74,41 +61,11 @@ class Add extends Component{
               </Text>
               <TextInput 
                 style={Styles.name} 
-                placeholder="Nombre del grupo"
+                placeholder="Nombre del grupo (o piso)"
                 value={this.state.grupo} 
                 onChangeText={(grupo)=>{this.setState({grupo})}}
               />
             </View>
-
-            <View style={Styles.headerRigth}>
-              
-              <TouchableOpacity onPress={this._onPressButton}>
-                <View style={styles.buttonSecondary}>
-                  <Text style={styles.buttonTextSecondary}>
-                    CAPTURAR
-                  </Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={this._onPressButton}>
-                <View style={styles.buttonSecondary}>
-                  <Text style={styles.buttonTextSecondary}>
-                    ESCOGER
-                  </Text>
-                </View>
-              </TouchableOpacity> 
-
-              <TouchableOpacity onPress={this._onPressButton}>
-                <View style={styles.buttonSecondary}>
-                  <Text style={styles.buttonTextSecondary}>
-                    ELIMINAR
-                  </Text>
-                </View>
-              </TouchableOpacity>
-  
-            </View>
-
-
         </View>
 
 
@@ -120,11 +77,19 @@ class Add extends Component{
               <TouchableOpacity onPress={this.cancelar}>
                 <View style={styles.buttonPrimary}>
                   <Text style={styles.buttonTextPrimary}>
-                    Eliminar -
+                    Cancelar
                   </Text>
                 </View>
               </TouchableOpacity>
             </View>
+
+            <TouchableOpacity onPress={this._onPressButton}>
+                <View style={styles.buttonPrimary}>
+                  <Text style={styles.buttonTextPrimary}>
+                    CAPTURAR
+                  </Text>
+                </View>
+              </TouchableOpacity>
 
             <View style={Styles.footerRight}>
               <TouchableOpacity onPress={this.agregar}>
@@ -158,7 +123,7 @@ const Styles = StyleSheet.create({
   },
   headerLeft: {
     flex: 1.2,
-    marginVertical:'7%',
+    marginVertical:'10%',
   },
   headerRigth: {
     flex: 1
@@ -169,9 +134,10 @@ const Styles = StyleSheet.create({
     textAlign : 'center',
   },
   name:{
-    borderWidth: 1,
+    borderBottomWidth: 1,
     borderColor: 'gray',
-    padding: 2
+    marginBottom:'5%',
+    marginHorizontal:'10%'
   },
   footer:{
     flex: 0.5,
