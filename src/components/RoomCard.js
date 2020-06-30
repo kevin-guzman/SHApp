@@ -16,7 +16,7 @@ let RoomCard = (props) =>{
         <Card style={Styles.card} >
             <Card.Content style={{flexDirection: 'row', justifyContent: 'space-between'}} >
                 <Image
-                    source={im}
+                    source={{uri: props.imageUri}}
                     style={Styles.image}
                 />
 

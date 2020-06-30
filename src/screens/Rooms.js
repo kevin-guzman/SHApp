@@ -55,6 +55,7 @@ class Rooms extends Component{
                     subtitle={x.groupRoom}
                     changeRoomValue={this.changeRoomValue}
                     bgColor='green'
+                    imageUri= {x.imageRoom}
                   >
                   </RoomCard>
                 </View>

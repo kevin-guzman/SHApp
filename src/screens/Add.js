@@ -5,16 +5,16 @@ import {View,
   Button, 
   Alert, 
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from 'react-native'
 
 import {connect} from 'react-redux'
 import {addRoom,removeRoom} from '../actions/rooms'
 import styles from '../util/Styles'
 
-//import AsyncStorage from '@react-native-community/async-storage'
 
-var id =0
+//var id =0
 class Add extends Component{
   constructor(props){
     super(props)
@@ -25,14 +25,22 @@ class Add extends Component{
     }
 
   }
+
+  
   _onPressButton() {Alert.alert('Sirve el boton')}
 
+  capturar = () =>{
+    this.props.navigation.navigate('Capture')
+  }
   agregar = async() =>{
+    //id+=1;
+    let id = this.props.rooms.length;
     id+=1;
     this.props.addRoom({
       id: id,
       room: this.state.nombre,
-      groupRoom: this.state.grupo
+      groupRoom: this.state.grupo,
+      imageRoom: this.props.navigation.getParam('photo')
     })
     this.props.navigation.navigate('Rooms')
   }
@@ -65,6 +73,15 @@ class Add extends Component{
                 value={this.state.grupo} 
                 onChangeText={(grupo)=>{this.setState({grupo})}}
               />
+              <View style={Styles.image} >
+                <Image
+                  style={{flex:1}}
+                  width={200}
+                  height={200}
+                  source={{uri: this.props.navigation.getParam('photo')}}
+                />
+              </View>
+              
             </View>
         </View>
 
@@ -83,7 +100,7 @@ class Add extends Component{
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity onPress={this._onPressButton}>
+            <TouchableOpacity onPress={this.capturar}>
                 <View style={styles.buttonPrimary}>
                   <Text style={styles.buttonTextPrimary}>
                     CAPTURAR
@@ -117,9 +134,10 @@ const Styles = StyleSheet.create({
     padding: 10
   },
   header: {
-    flex: 2,
+    flex: 3,
     flexDirection:'row',
     marginVertical:'15%',
+    //backgroundColor:'red'
   },
   headerLeft: {
     flex: 1.2,
@@ -143,6 +161,7 @@ const Styles = StyleSheet.create({
     flex: 0.5,
     alignContent:'flex-end',
     flexDirection : 'row',
+    //backgroundColor:'blue'
   },
   footerLeft:{
     flex:1,
@@ -153,6 +172,12 @@ const Styles = StyleSheet.create({
     flex:1,
     marginHorizontal:5,
     alignItems:'center'
+  },
+  image:{
+    flex:1,
+    alignSelf:"center",
+    borderColor: 'gray',
+    borderWidth: 1
   }
 
 })

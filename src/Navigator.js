@@ -13,6 +13,7 @@ import Login from './screens/Login'
 import Rooms from './screens/Rooms'
 import Windows from './screens/Windows'
 import SingUp from './screens/SingUp'
+import TakePhoto from './screens/TakePhoto';
 //import { View } from 'react-native';
 
 
@@ -20,7 +21,8 @@ import SingUp from './screens/SingUp'
 const HabitacionesStack = createStackNavigator(
   {
     Rooms: Rooms,
-    Add : Add
+    Add : Add,
+    Capture: TakePhoto,
   },
   {
     initialRouteName: 'Rooms',
